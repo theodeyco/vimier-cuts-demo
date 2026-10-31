@@ -170,6 +170,14 @@
       .social:hover .social-icon svg {
         transform: scale(1.18) rotate(6deg);
       }
+
+      .chat-toggle:hover {
+        transform: scale(1.1) rotate(-8deg);
+      }
+
+      .chip:hover {
+        background: var(--tan);
+      }
     }
 
     .reveal {
@@ -578,6 +586,374 @@
         display: none;
       }
     }
+
+    .chat-toggle {
+      position: fixed;
+      right: 20px;
+      bottom: 20px;
+      width: 58px;
+      height: 58px;
+      display: grid;
+      place-items: center;
+      border: none;
+      border-radius: 50%;
+      background: var(--dark);
+      color: var(--tan);
+      cursor: pointer;
+      z-index: 900;
+      box-shadow: 0 6px 18px rgba(0, 0, 0, 0.3);
+      transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    .chat-toggle svg,
+    .chat-input button svg {
+      width: 26px;
+      height: 26px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
+
+    .chat-toggle:active {
+      transform: scale(0.92);
+    }
+
+    .chat {
+      position: fixed;
+      right: 20px;
+      bottom: 90px;
+      width: min(360px, calc(100vw - 40px));
+      height: min(480px, calc(100vh - 120px));
+      display: flex;
+      flex-direction: column;
+      overflow: hidden;
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.3);
+      z-index: 900;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(16px) scale(0.96);
+      transform-origin: bottom right;
+      transition: opacity 0.25s ease, transform 0.25s ease, visibility 0.25s;
+    }
+
+    .chat.open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: none;
+    }
+
+    .chat-head {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 18px;
+      background: var(--dark);
+      color: var(--light);
+    }
+
+    .chat-head strong {
+      display: block;
+      color: var(--tan);
+    }
+
+    .chat-head span {
+      font-size: 12px;
+      color: var(--steel);
+    }
+
+    .chat-tools {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .chat-sound {
+      padding: 3px 10px;
+      border: 1px solid var(--steel);
+      border-radius: 999px;
+      background: none;
+      color: var(--steel);
+      font-size: 12px;
+      cursor: pointer;
+    }
+
+    .chat-sound[aria-pressed="false"] {
+      opacity: 0.6;
+    }
+
+    .chat-close {
+      border: none;
+      background: none;
+      color: var(--light);
+      font-size: 28px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .chat-log {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      padding: 16px;
+      overflow-y: auto;
+      background: var(--light);
+    }
+
+    .msg {
+      max-width: 82%;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 15px;
+      line-height: 1.4;
+      white-space: pre-line;
+      animation: msgIn 0.25s ease;
+    }
+
+    .msg.bot {
+      align-self: flex-start;
+      background: #fff;
+      color: var(--dark);
+      border-bottom-left-radius: 4px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .msg.me {
+      align-self: flex-end;
+      background: var(--dark);
+      color: var(--light);
+      border-bottom-right-radius: 4px;
+      animation: meIn 0.3s ease;
+    }
+
+    @keyframes msgIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px);
+      }
+    }
+
+    @keyframes meIn {
+      from {
+        opacity: 0;
+        transform: translateX(24px);
+      }
+    }
+
+    .typing {
+      align-self: flex-start;
+      display: flex;
+      gap: 5px;
+      padding: 12px 14px;
+      background: #fff;
+      border-radius: 14px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .typing span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--steel);
+      animation: dot 1s ease-in-out infinite;
+    }
+
+    .typing span:nth-child(2) {
+      animation-delay: 0.15s;
+    }
+
+    .typing span:nth-child(3) {
+      animation-delay: 0.3s;
+    }
+
+    @keyframes dot {
+
+      0%,
+      60%,
+      100% {
+        transform: translateY(0);
+        opacity: 0.5;
+      }
+
+      30% {
+        transform: translateY(-5px);
+        opacity: 1;
+      }
+    }
+
+    .chat-chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 8px 12px 0;
+      background: var(--light);
+    }
+
+    .chip {
+      padding: 6px 14px;
+      border: 1px solid var(--tan);
+      border-radius: 999px;
+      background: #fff;
+      color: var(--dark);
+      font-size: 14px;
+      cursor: pointer;
+      animation: chipIn 0.35s ease backwards;
+      transition: background 0.2s ease, transform 0.2s ease;
+    }
+
+    .chip:active {
+      transform: scale(0.94);
+    }
+
+    @keyframes chipIn {
+      from {
+        opacity: 0;
+        transform: translateY(8px) scale(0.9);
+      }
+    }
+
+    .chat-input {
+      display: flex;
+      gap: 8px;
+      padding: 12px;
+      background: var(--light);
+    }
+
+    .chat-input input {
+      flex: 1;
+      min-width: 0;
+      padding: 10px 14px;
+      border: 1px solid #d5d5d5;
+      border-radius: 999px;
+      font-size: 16px;
+      font-family: Arial, sans-serif;
+    }
+
+    .chat-input button {
+      width: 42px;
+      height: 42px;
+      display: grid;
+      place-items: center;
+      border: none;
+      border-radius: 50%;
+      background: var(--tan);
+      color: var(--dark);
+      cursor: pointer;
+    }
+
+    .chat-input button svg {
+      width: 20px;
+      height: 20px;
+    }
+
+    .chat-input button.fire svg {
+      animation: kick 0.4s ease;
+    }
+
+    @keyframes kick {
+      40% {
+        transform: translate(6px, -6px) scale(1.25);
+      }
+    }
+
+    .plane {
+      position: fixed;
+      width: 28px;
+      height: 28px;
+      z-index: 1001;
+      pointer-events: none;
+      animation: fly 1s cubic-bezier(0.4, 0, 0.8, 0.6) forwards;
+    }
+
+    .plane svg {
+      width: 100%;
+      height: 100%;
+      fill: var(--tan);
+      stroke: var(--dark);
+      stroke-width: 1.4;
+      stroke-linejoin: round;
+    }
+
+    @keyframes fly {
+      0% {
+        transform: translate(0, 0) rotate(-25deg) scale(1);
+        opacity: 1;
+      }
+
+      35% {
+        transform: translate(40px, -80px) rotate(-55deg) scale(1.2);
+      }
+
+      60% {
+        transform: translate(120px, -170px) rotate(-30deg) scale(1);
+      }
+
+      100% {
+        transform: translate(280px, -440px) rotate(-40deg) scale(0.35);
+        opacity: 0;
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+
+      .msg,
+      .chip,
+      .typing span,
+      .chat-input button.fire svg {
+        animation: none;
+      }
+    }
+
+    #chat-form {
+      display: flex;
+      gap: 8px;
+      margin: 0;
+      padding: 12px;
+      background: var(--light);
+    }
+
+    #chat-form input {
+      flex: 1;
+      min-width: 0;
+      width: auto;
+      box-sizing: border-box;
+      padding: 10px 14px;
+      border: 1px solid #d5d5d5;
+      border-radius: 999px;
+      font-size: 16px;
+      font-family: Arial, sans-serif;
+    }
+
+    #chat-form button {
+      flex: none;
+      width: 42px;
+      height: 42px;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      place-items: center;
+      border: none;
+      border-radius: 50%;
+      background: var(--tan);
+      color: var(--dark);
+      cursor: pointer;
+    }
+
+    #chat-form button svg {
+      width: 20px;
+      height: 20px;
+      fill: none;
+      stroke: currentColor;
+      stroke-width: 1.8;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+    }
   </style>
 </head>
 
@@ -733,14 +1109,45 @@
         placeholder="Barber preference, reference photo link, anything we should know"></textarea>
 
       <button type="submit" class="button">Request Appointment</button>
+    </form>
 
-      <div class="spinner" id="spinner"></div>
+    <div class="spinner" id="spinner"></div>
 
-      <p class="form-message" id="form-message"></p>
+    <p class="form-message" id="form-message"></p>
   </div>
 
   <div class="lightbox" id="lightbox">
     <img id="lightbox-img" src="" alt="">
+  </div>
+  <button class="chat-toggle" id="chat-toggle" type="button" aria-label="Open chat" aria-expanded="false">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M21 12a8 8 0 0 1-11.6 7.1L4 20l1-4.2A8 8 0 1 1 21 12z" />
+    </svg>
+  </button>
+
+  <div class="chat" id="chat" role="dialog" aria-label="Chat with Vimier Cuts" aria-hidden="true">
+    <div class="chat-head">
+      <div>
+        <strong>Vimier Cuts</strong>
+        <span>Virtual assistant</span>
+      </div>
+      <div class="chat-tools">
+        <button class="chat-sound" id="chat-sound" type="button" aria-pressed="true">Sound on</button>
+        <button class="chat-close" id="chat-close" type="button" aria-label="Close chat">&times;</button>
+      </div>
+    </div>
+
+    <div class="chat-log" id="chat-log"></div>
+    <div class="chat-chips" id="chat-chips"></div>
+
+    <form class="chat-input" id="chat-form">
+      <input type="text" id="chat-text" placeholder="Type a question..." autocomplete="off" maxlength="200">
+      <button type="submit" aria-label="Send">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <path d="M4 12l16-8-6 16-3-7-7-1z" />
+        </svg>
+      </button>
+    </form>
   </div>
   <script>
     const cards = document.querySelectorAll(".card");
@@ -874,6 +1281,339 @@
         icon.appendChild(dot);
         setTimeout(function () { dot.remove(); }, 600);
       });
+    });
+
+    const SHOP = {
+      name: "Vimier Cuts",
+      phone: "(555) 123-4567",
+      email: "vimier@example.com",
+      address: "123 Main Street, Round Rock, TX",
+      hoursText: "Mon to Fri 9 AM to 7 PM, Sat 8 AM to 5 PM, closed Sunday.",
+      services: [
+        { name: "Cut and Beard", price: 50, keys: ["cut and beard", "haircut and beard", "cut & beard", "cut + beard", "combo", "package"] },
+        { name: "Kids Cut (under 12)", price: 22, keys: ["kid", "child", "son", "boy", "under 12"] },
+        { name: "Hot Towel Shave", price: 35, keys: ["shave", "towel"] },
+        { name: "Skin Fade", price: 35, keys: ["fade", "skin"] },
+        { name: "Beard Trim and Line-Up", price: 20, keys: ["beard", "line up", "lineup", "line-up"] },
+        { name: "Classic Haircut", price: 30, keys: ["haircut", "classic", "regular", "trim", "cut"] }
+      ]
+    };
+
+    const DAYS = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+
+    const chat = document.getElementById("chat");
+    const chatToggle = document.getElementById("chat-toggle");
+    const chatClose = document.getElementById("chat-close");
+    const chatLog = document.getElementById("chat-log");
+    const chatChips = document.getElementById("chat-chips");
+    const chatForm = document.getElementById("chat-form");
+    const chatText = document.getElementById("chat-text");
+    const soundBtn = document.getElementById("chat-sound");
+
+    let soundOn = true;
+    let audioCtx = null;
+    let greeted = false;
+
+    function tone(from, to, seconds, volume) {
+      if (!soundOn) return;
+      try {
+        audioCtx = audioCtx || new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === "suspended") audioCtx.resume();
+
+        const t = audioCtx.currentTime;
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+
+        osc.type = "sine";
+        osc.frequency.setValueAtTime(from, t);
+        osc.frequency.exponentialRampToValueAtTime(to, t + seconds * 0.9);
+
+        gain.gain.setValueAtTime(0.0001, t);
+        gain.gain.exponentialRampToValueAtTime(volume, t + 0.03);
+        gain.gain.exponentialRampToValueAtTime(0.0001, t + seconds);
+
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(t);
+        osc.stop(t + seconds + 0.05);
+      } catch (error) { }
+    }
+
+    function whoop() { tone(300, 1100, 0.3, 0.12); }
+    function blip() { tone(700, 900, 0.1, 0.06); }
+
+    function flyPlane(source) {
+      if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+
+      const rect = source.getBoundingClientRect();
+      const plane = document.createElement("span");
+      plane.className = "plane";
+      plane.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M3 11l18-8-8 18-2-8-8-2z"/></svg>';
+      plane.style.left = rect.left + rect.width / 2 - 14 + "px";
+      plane.style.top = rect.top + rect.height / 2 - 14 + "px";
+
+      document.body.appendChild(plane);
+      setTimeout(function () { plane.remove(); }, 1100);
+    }
+
+    function addMessage(text, who) {
+      const bubble = document.createElement("div");
+      bubble.className = "msg " + who;
+      bubble.textContent = text;
+      chatLog.appendChild(bubble);
+      chatLog.scrollTop = chatLog.scrollHeight;
+    }
+
+    function showTyping() {
+      const dots = document.createElement("div");
+      dots.className = "typing";
+      dots.innerHTML = "<span></span><span></span><span></span>";
+      chatLog.appendChild(dots);
+      chatLog.scrollTop = chatLog.scrollHeight;
+      return dots;
+    }
+
+    function botReply(text) {
+      const dots = showTyping();
+      const delay = 600 + Math.min(text.length * 12, 900);
+
+      setTimeout(function () {
+        dots.remove();
+        addMessage(text, "bot");
+        blip();
+      }, delay);
+    }
+
+    function formatHour(h) {
+      const suffix = h >= 12 && h < 24 ? "PM" : "AM";
+      const n = h % 12 === 0 ? 12 : h % 12;
+      return n + " " + suffix;
+    }
+
+    function shopNow() {
+      const parts = new Intl.DateTimeFormat("en-US", {
+        timeZone: SHOP_TZ,
+        weekday: "long",
+        hour: "numeric",
+        hourCycle: "h23"
+      }).formatToParts(new Date());
+
+      return {
+        day: parts.find(function (p) { return p.type === "weekday"; }).value,
+        hour: Number(parts.find(function (p) { return p.type === "hour"; }).value)
+      };
+    }
+
+    function dayHours(day) {
+      const h = HOURS[day];
+      return h
+        ? "On " + day + " we're open " + formatHour(h[0]) + " to " + formatHour(h[1]) + "."
+        : "We're closed on " + day + ".";
+    }
+
+    function statusAnswer() {
+      const now = shopNow();
+      const today = HOURS[now.day];
+
+      if (today && now.hour >= today[0] && now.hour < today[1]) {
+        return "We're open right now, until " + formatHour(today[1]) + " today.";
+      }
+
+      if (today && now.hour < today[0]) {
+        return "We're closed right now. We open today at " + formatHour(today[0]) + ".";
+      }
+
+      const start = DAYS.indexOf(now.day);
+      for (let step = 1; step <= 7; step++) {
+        const name = DAYS[(start + step) % 7];
+        if (HOURS[name]) {
+          return "We're closed right now. We open " + (step === 1 ? "tomorrow" : name) + " at " + formatHour(HOURS[name][0]) + ".";
+        }
+      }
+      return "We're closed right now.";
+    }
+
+    function matchKey(q, words, key) {
+      if (key.length <= 4) return words.includes(key) || words.includes(key + "s");
+      return q.includes(key);
+    }
+
+    function findService(q, words) {
+      return SHOP.services.find(function (s) {
+        return s.keys.some(function (key) { return matchKey(q, words, key); });
+      });
+    }
+
+    function goToBooking(serviceName) {
+      setTimeout(function () {
+        setChat(false);
+
+        const select = document.getElementById("service");
+        if (serviceName && select) {
+          Array.from(select.options).forEach(function (option) {
+            if (option.text === serviceName) select.value = option.text;
+          });
+        }
+
+        document.getElementById("contact").scrollIntoView({ behavior: "smooth" });
+        setTimeout(function () {
+          document.getElementById("name").focus({ preventScroll: true });
+        }, 800);
+      }, 1800);
+    }
+
+    function getAnswer(text) {
+      const q = text.toLowerCase().replace(/[^a-z0-9$&+\-' ]/g, " ").replace(/\s+/g, " ").trim();
+      const words = q.split(" ");
+
+      const has = function (list) { return list.some(function (k) { return q.includes(k); }); };
+      const hasWord = function (list) { return list.some(function (k) { return words.includes(k); }); };
+
+      const service = findService(q, words);
+      const fallback = "I'm not sure about that one. Call us at " + SHOP.phone + " or use the booking form and we'll get back to you.";
+
+      if (!q) return { text: fallback };
+
+      if (hasWord(["thanks", "thank", "thx", "ty"])) {
+        return { text: "You're welcome! Anything else I can help with?" };
+      }
+
+      if (words.length <= 4 && (hasWord(["hi", "hello", "hey", "yo", "hola", "sup"]) || has(["good morning", "good afternoon", "good evening"]))) {
+        return { text: "Hey! Ask me about prices, hours, location, or booking." };
+      }
+
+      if (hasWord(["human", "person", "bot", "robot", "ai", "staff", "owner", "manager"])) {
+        return { text: "I'm an automated assistant, not a person. For anything I can't answer, call " + SHOP.phone + "." };
+      }
+
+      if (has(["cancel", "resched", "move my"])) {
+        return { text: "To change or cancel, reply to your confirmation email or call " + SHOP.phone + "." };
+      }
+
+      if (has(["book", "appoint", "schedule", "reserve"])) {
+        return {
+          text: service
+            ? "Great choice! I'll take you to the booking form with " + service.name + " selected."
+            : "Sure! I'll take you to the booking form. Pick a service, a date and a time, and we'll confirm shortly.",
+          action: function () { goToBooking(service ? service.name : ""); }
+        };
+      }
+
+      if (has(["walk-in", "walk in", "walkin", "walk"])) {
+        return { text: "Walk-ins are welcome, and appointments are preferred. Say \"book\" and I'll take you to the booking form." };
+      }
+
+      const askedPrice = has(["price", "cost", "how much", "charge", "$"]) || hasWord(["fee", "fees"]);
+      if (askedPrice) {
+        if (service) return { text: service.name + " is $" + service.price + "." };
+        return {
+          text: "Here are our prices:\n" + SHOP.services.slice().reverse().map(function (s) {
+            return s.name + ": $" + s.price;
+          }).join("\n")
+        };
+      }
+
+      const dayAsked = DAYS.find(function (d) { return q.includes(d.toLowerCase()); });
+      if (dayAsked) return { text: dayHours(dayAsked) };
+
+      if (hasWord(["tomorrow"])) {
+        const next = DAYS[(DAYS.indexOf(shopNow().day) + 1) % 7];
+        return { text: dayHours(next) };
+      }
+
+      if (hasWord(["weekend"])) {
+        return { text: dayHours("Saturday") + "\n" + dayHours("Sunday") };
+      }
+
+      if (has(["open", "clos", "hour"]) || hasWord(["today"])) {
+        return { text: statusAnswer() + "\n" + SHOP.hoursText };
+      }
+
+      if (has(["where", "address", "locat", "direction", "find you", "parking"])) {
+        if (has(["parking"])) return { text: "I don't have parking details. Please call " + SHOP.phone + "." };
+        return { text: SHOP.name + " is at " + SHOP.address + ". There's a Get Directions button in the Hours and Location section." };
+      }
+
+      if (has(["phone", "call", "number", "email", "contact"])) {
+        return { text: "You can call " + SHOP.phone + " or email " + SHOP.email + "." };
+      }
+
+      if (service) {
+        return { text: service.name + " is $" + service.price + ". Say \"book\" and I'll take you to the booking form." };
+      }
+
+      return { text: fallback };
+    }
+
+    function ask(question) {
+      addMessage(question, "me");
+      const result = getAnswer(question);
+      botReply(result.text);
+      if (result.action) result.action();
+    }
+
+    function setChat(open) {
+      chat.classList.toggle("open", open);
+      chat.setAttribute("aria-hidden", String(!open));
+      chatToggle.setAttribute("aria-expanded", String(open));
+
+      if (open && !greeted) {
+        greeted = true;
+        setTimeout(function () {
+          botReply("Hi! I'm the " + SHOP.name + " virtual assistant. Ask me about prices, hours, or location.");
+        }, 350);
+      }
+    }
+
+    chatToggle.addEventListener("click", function () {
+      setChat(!chat.classList.contains("open"));
+    });
+
+    chatClose.addEventListener("click", function () {
+      setChat(false);
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") setChat(false);
+    });
+
+    soundBtn.addEventListener("click", function () {
+      soundOn = !soundOn;
+      soundBtn.setAttribute("aria-pressed", String(soundOn));
+      soundBtn.textContent = soundOn ? "Sound on" : "Sound off";
+    });
+
+    ["Prices", "Hours", "Location", "Book a visit"].forEach(function (label, index) {
+      const chip = document.createElement("button");
+      chip.type = "button";
+      chip.className = "chip";
+      chip.textContent = label;
+      chip.style.animationDelay = index * 0.08 + "s";
+
+      chip.addEventListener("click", function () {
+        whoop();
+        flyPlane(chip);
+        ask(label);
+      });
+
+      chatChips.appendChild(chip);
+    });
+
+    chatForm.addEventListener("submit", function (event) {
+      event.preventDefault();
+
+      const text = chatText.value.trim();
+      if (!text) return;
+
+      const sendButton = chatForm.querySelector("button");
+      chatText.value = "";
+
+      sendButton.classList.add("fire");
+      setTimeout(function () { sendButton.classList.remove("fire"); }, 400);
+
+      whoop();
+      flyPlane(sendButton);
+      ask(text);
     });
 
     const scriptURL = "https://script.google.com/macros/s/AKfycbyHJ8an5zXC0XeOljF7bKNVCdVIVyzWabB-WcdDUsYW6lG7O4XbPffJY9cK7moJKlS3/exec ";
